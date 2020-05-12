@@ -4,8 +4,8 @@ import androidx.compose.Model
 
 class Navigator {
     sealed class Screen {
-        object Home : Screen()
-        class Article() : Screen()
+        object HomeScreen : Screen()
+        class GroupScreen(val group : com.example.tvh.model.Group) : Screen()
     }
 
     private val navigation: Navigation = Navigation()
@@ -21,5 +21,5 @@ class Navigator {
 
 @Model
 private class Navigation {
-    var currentScreen: Navigator.Screen = Navigator.Screen.Home
+    var currentScreen: Navigator.Screen = Navigator.Screen.HomeScreen
 }

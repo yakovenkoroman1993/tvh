@@ -4,10 +4,12 @@ import com.google.protobuf.ByteString
 import java.nio.ByteBuffer
 import java.util.*
 
-fun newUUIDasByteString(): ByteString {
-    val uuid = UUID.randomUUID()
+fun newUUID(): UUID {
+    return UUID.randomUUID()
+}
 
-    return convertUUIDtoByteString(uuid)
+fun newUUIDasByteString(): ByteString {
+    return convertUUIDtoByteString(newUUID())
 }
 
 fun convertUUIDtoByteString(uuid: UUID): ByteString {

@@ -1,4 +1,4 @@
-package com.example.tvh.ui.article
+package com.example.tvh.ui.group
 
 import androidx.compose.Composable
 import androidx.compose.unaryPlus
@@ -14,7 +14,7 @@ import com.example.tvh.di.AppContainer
 import com.example.tvh.services.Navigator
 
 @Composable
-fun ArticleScreen(
+fun GroupScreen(
     text: String,
     title: String,
     appContainer: AppContainer
@@ -22,7 +22,7 @@ fun ArticleScreen(
     val navigator = appContainer.navigator
 
     val style = +MaterialTheme.typography()
-    Article(
+    Group(
         title = title,
         body = text,
         style = style.subtitle1 ,
@@ -33,7 +33,7 @@ fun ArticleScreen(
 }
 
 @Composable
-fun Article(
+fun Group(
     title: String,
     body: String,
     style: TextStyle,
@@ -56,7 +56,7 @@ fun Article(
                         textStyle = TextStyle(fontSize = 24.sp)
                     ),
                     onClick = {
-                        onNavigateTo(Navigator.Screen.Home)
+                        onNavigateTo(Navigator.Screen.HomeScreen)
                     }
                 )
             }
@@ -70,7 +70,7 @@ fun Article(
 @Preview
 @Composable
 fun PreviewArticle() {
-    Article(
+    Group(
         title = "title",
         body = "body",
         style = TextStyle()

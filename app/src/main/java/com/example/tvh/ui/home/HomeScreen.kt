@@ -15,20 +15,22 @@ fun HomeScreen(appContainer: AppContainer) {
 
     val sourceData = +state { SourceData() }
     +onActive {
-//        sourceData.value.home = loader.getHome()
+        sourceData.value.home = loader.getHome()
     }
 
     Home(
-        onAddProject = {
-//            commander.addHomeProject(it)
-//            sourceData.value.home = loader.getHome()
+        groups = sourceData.value.home.groups,
+        onAddGroup = { name ->
+            commander.addHomeGroup(name)
+            sourceData.value.home = loader.getHome()
         },
-        onRemoveProject = {
-//            commander.removeHomeProject(it)
-//            sourceData.value.home = loader.getHome()
+        onRemoveGroup = {
+            commander.removeHomeGroup(it)
+            sourceData.value.home = loader.getHome()
         },
-        onNavigateTo = { screen ->
+        onNavigateToGroup = { screen ->
             navigator.navigateTo(screen)
         }
     )
 }
+

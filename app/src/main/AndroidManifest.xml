@@ -4,7 +4,7 @@
     package="com.example.tvh"
 >
     <application
-        android:name="com.example.tvh.TodoListApplication"
+        android:name="com.example.tvh.TvhApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.example.todolist"
+        applicationId "com.example.tvh"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

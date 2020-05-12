@@ -13,7 +13,7 @@ import com.example.tvh.ui.common.DialogButton
 
 @Composable
 fun HomeHeader(
-    onAddProject: (projectName: String) -> Unit
+    onAddGroup: (projectName: String) -> Unit
 ) {
     val editorModel = +state { EditorModel() }
 
@@ -22,7 +22,7 @@ fun HomeHeader(
             DialogButton(
                 text = "New",
                 onOk = {
-                    onAddProject(editorModel.value.text)
+                    onAddGroup(editorModel.value.text)
                     editorModel.value = EditorModel("")
                 }
             ) {
