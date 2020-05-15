@@ -4,33 +4,26 @@ import androidx.compose.Composable
 import androidx.compose.onActive
 import androidx.compose.state
 import androidx.compose.unaryPlus
-import com.example.tvh.data.SourceData
 import com.example.tvh.di.AppContainer
 
 @Composable
 fun HomeScreen(appContainer: AppContainer) {
-    val loader = appContainer.loader
-    val commander = appContainer.commander
+    val repo = appContainer.homeRepo
+    val commander = appContainer.homeCommander
     val navigator = appContainer.navigator
 
-    val sourceData = +state { SourceData() }
+//    +state { appContainer.ui.home }
     +onActive {
-        sourceData.value.home = loader.getHome()
+        repo.loadHome()
     }
 
     Home(
-        groups = sourceData.value.home.groups,
-        onAddGroup = { name ->
-            commander.addHomeGroup(name)
-            sourceData.value.home = loader.getHome()
+        groups = appContainer.ui.home.groups,
+        onAddGroup = {
+            commander.addGroup(it)
         },
-        onRemoveGroup = {
-            commander.removeHomeGroup(it)
-            sourceData.value.home = loader.getHome()
-        },
-        onNavigateToGroup = { screen ->
-            navigator.navigateTo(screen)
-        }
+        onRemoveGroup = { commander.removeGroup(it) },
+        onNavigateToGroup = { navigator.navigateTo(it) }
     )
 }
 

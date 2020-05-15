@@ -8,12 +8,13 @@ import androidx.ui.core.Text
 import androidx.ui.core.TextField
 import androidx.ui.core.dp
 import androidx.ui.layout.*
+import com.example.tvh.entity.Group
 import com.example.tvh.ui.common.ActionsRow
 import com.example.tvh.ui.common.DialogButton
 
 @Composable
 fun HomeHeader(
-    onAddGroup: (projectName: String) -> Unit
+    onAddGroup: (group: Group) -> Unit
 ) {
     val editorModel = +state { EditorModel() }
 
@@ -22,7 +23,9 @@ fun HomeHeader(
             DialogButton(
                 text = "New",
                 onOk = {
-                    onAddGroup(editorModel.value.text)
+                    onAddGroup(
+                        Group(name = editorModel.value.text)
+                    )
                     editorModel.value = EditorModel("")
                 }
             ) {

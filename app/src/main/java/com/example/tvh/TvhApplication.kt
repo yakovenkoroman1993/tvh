@@ -11,6 +11,6 @@ class TvhApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        this.container = AppContainerImpl()
+        this.container = AppContainerImpl(applicationContext)
     }
 }

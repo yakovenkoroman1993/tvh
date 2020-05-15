@@ -1,8 +1,7 @@
 package com.example.tvh.model
 
-import androidx.compose.Model
+import com.example.tvh.entity.Group
 
-@Model
 class Home(
     val groups: List<Group> = listOf()
 )

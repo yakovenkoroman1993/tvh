@@ -1,11 +1,12 @@
 package com.example.tvh.services
 
 import androidx.compose.Model
+import com.example.tvh.entity.Group
 
 class Navigator {
     sealed class Screen {
         object HomeScreen : Screen()
-        class GroupScreen(val group : com.example.tvh.model.Group) : Screen()
+        class GroupScreen(val group : Group) : Screen()
     }
 
     private val navigation: Navigation = Navigation()

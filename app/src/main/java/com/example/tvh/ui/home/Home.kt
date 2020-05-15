@@ -9,15 +9,14 @@ import androidx.ui.material.Button
 import androidx.ui.material.ContainedButtonStyle
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.TextButtonStyle
-import com.example.tvh.model.Group
+import com.example.tvh.entity.Group
 import com.example.tvh.services.Navigator
-import java.util.*
 
 @Composable
 fun Home(
     groups: List<Group>,
-    onAddGroup: (name: String) -> Unit = {},
-    onRemoveGroup: (id: UUID) -> Unit = {},
+    onAddGroup: (group: Group) -> Unit = {},
+    onRemoveGroup: (group: Group) -> Unit = {},
     onNavigateToGroup: (screen: Navigator.Screen) -> Unit = {}
 ) {
 
@@ -26,18 +25,18 @@ fun Home(
             onAddGroup = onAddGroup
         )
         HomeBody {
-            groups.forEach {
+            groups.forEach { group ->
                 Clickable(
                     onClick = {
                         onNavigateToGroup(
-                            Navigator.Screen.GroupScreen(it)
+                            Navigator.Screen.GroupScreen(group)
                         )
                     }
                 ) {
                     GroupItem(
-                        text = it.name,
-                        onCopy = { onAddGroup(it.name) },
-                        onRemove = { onRemoveGroup(it.id) }
+                        text = group.name,
+                        onCopy = { onAddGroup(group) },
+                        onRemove = { onRemoveGroup(group) }
                     )
                 }
             }

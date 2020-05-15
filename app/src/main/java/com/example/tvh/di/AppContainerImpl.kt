@@ -1,17 +1,20 @@
 package com.example.tvh.di
 
-import com.example.tvh.services.Commander
-import com.example.tvh.services.Loader
-import com.example.tvh.services.Navigator
-import com.example.tvh.services.StateManagement
+import android.content.Context
+import androidx.room.Room
+import com.example.tvh.commander.HomeCommander
+import com.example.tvh.model.UiModel
+import com.example.tvh.repo.HomeRepo
+import com.example.tvh.services.*
 
 /**
  * Dependency Injection container at the application level.
  */
 interface AppContainer {
-    val loader: Loader
-    val commander: Commander
     val navigator: Navigator
+    val ui: UiModel
+    val homeRepo: HomeRepo
+    val homeCommander: HomeCommander
 }
 
 /**
@@ -19,24 +22,35 @@ interface AppContainer {
  *
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
-class AppContainerImpl : AppContainer {
-    private val stateManagement: StateManagement by lazy {
-        StateManagement()
+class AppContainerImpl(private val applicationContext: Context) : AppContainer {
+
+    private val db: Database by lazy {
+        Room
+            .databaseBuilder(applicationContext, Database::class.java, "tvh")
+            .allowMainThreadQueries() // TODO: replace it with the execution in background
+            .build()
     }
 
     override val navigator: Navigator by lazy {
         Navigator()
     }
 
-    override val loader: Loader by lazy {
-        Loader(
-            stateManagement = stateManagement
+    override val ui: UiModel by lazy {
+        UiModel()
+    }
+
+    override val homeRepo: HomeRepo by lazy {
+        HomeRepo(
+            db = db,
+            ui = ui
         )
     }
 
-    override val commander: Commander by lazy {
-        Commander(
-            stateManagement = stateManagement
+    override val homeCommander: HomeCommander by lazy {
+        HomeCommander(
+            db = db,
+            repo = homeRepo
         )
     }
+
 }
