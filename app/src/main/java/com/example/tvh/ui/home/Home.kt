@@ -66,6 +66,7 @@ fun GroupItem(
                 style = ContainedButtonStyle(),
                 onClick = onCopy
             )
+            WidthSpacer(width = 4.dp)
             Button(
                 "Remove",
                 style = TextButtonStyle(),

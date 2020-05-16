@@ -27,8 +27,11 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     private val db: Database by lazy {
         Room
             .databaseBuilder(applicationContext, Database::class.java, "tvh")
-            .allowMainThreadQueries() // TODO: replace it with the execution in background
             .build()
+    }
+
+    private val executor: Executor by lazy {
+        Executor(ui)
     }
 
     override val navigator: Navigator by lazy {
@@ -42,14 +45,16 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     override val homeRepo: HomeRepo by lazy {
         HomeRepo(
             db = db,
-            ui = ui
+            ui = ui,
+            executor = executor
         )
     }
 
     override val homeCommander: HomeCommander by lazy {
         HomeCommander(
             db = db,
-            repo = homeRepo
+            repo = homeRepo,
+            executor = executor
         )
     }
 
