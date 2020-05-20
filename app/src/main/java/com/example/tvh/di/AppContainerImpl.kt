@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.tvh.commander.HomeCommander
 import com.example.tvh.model.UiModel
+import com.example.tvh.repo.AuditInfoRepo
 import com.example.tvh.repo.HomeRepo
 import com.example.tvh.services.*
 
@@ -15,6 +16,7 @@ interface AppContainer {
     val ui: UiModel
     val homeRepo: HomeRepo
     val homeCommander: HomeCommander
+    val auditInfoRepo: AuditInfoRepo
 }
 
 /**
@@ -65,6 +67,14 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
             db = db,
             repo = homeRepo,
             executor = auditExecutor
+        )
+    }
+
+    override val auditInfoRepo: AuditInfoRepo by lazy {
+        AuditInfoRepo(
+            db = db,
+            ui = ui,
+            executor = executor
         )
     }
 

@@ -5,58 +5,78 @@ import androidx.compose.state
 import androidx.ui.core.*
 import androidx.ui.foundation.*
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.*
-import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
+import com.example.tvh.ui.lightThemeColors
+import com.example.tvh.ui.themeTypography
 
 @Composable
 fun DialogButton(
-    visible: Boolean = false,
-    text: String,
-    onOk: () -> Unit = {},
+    buttonText: String,
+    dialogTitle: String = buttonText,
+    disabledPrimaryButton: Boolean = false,
+    onApply: () -> Unit = {},
     children: @Composable() () -> Unit
 ) {
-    val (visible, setVisible) = state { visible }
-
-    Button(onClick = { setVisible(true) }) {
-        Text(text)
+    val (dialogVisible, setDialogVisible) = state { false }
+    Button(onClick = { setDialogVisible(true) }) {
+        Text(buttonText)
     }
-    if (visible) {
-        DialogForm(
-            titleText = text,
-            onClose = { setVisible(false) },
-            onOk = {
-                onOk()
-                setVisible(false)
-            }
-        ) {
-            children()
+
+    if (!dialogVisible) {
+        return
+    }
+
+    DialogForm(
+        dialogTitle = dialogTitle,
+        primaryButtonText = buttonText,
+        disabledPrimaryButton = disabledPrimaryButton,
+        onClose = { setDialogVisible(false) },
+        onApply = {
+            onApply()
+            setDialogVisible(false)
         }
+    ) {
+        children()
     }
 }
 
 @Composable
 fun DialogForm(
-    titleText: String,
-    onOk: () -> Unit,
+    dialogTitle: String,
+    disabledPrimaryButton: Boolean,
+    primaryButtonText: String,
+    onApply: () -> Unit,
     onClose: () -> Unit,
     children: @Composable() () -> Unit
 ) {
     Dialog(onCloseRequest = onClose) {
-        Surface(shape = RoundedCornerShape(4.dp)) {
-            Box {
-                Column {
-                    DialogTitle(titleText)
-
-                    children()
-
-                    Spacer(Modifier.preferredHeight(28.dp))
-
-                    DialogActions(
-                        onOk = onOk,
-                        onClose = onClose
-                    )
+        MaterialTheme(
+            colors = lightThemeColors,
+            typography = themeTypography
+        ) {
+            Surface(
+                shape = RoundedCornerShape(0),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Column {
+                        Box(modifier = Modifier.weight(1f)) {
+                            Column {
+                                DialogTitle(dialogTitle)
+                                Spacer(Modifier.preferredHeight(16.dp))
+                                children()
+                            }
+                        }
+                        DialogActions(
+                            disabled = disabledPrimaryButton,
+                            primaryText = primaryButtonText,
+                            onApply = onApply,
+                            onClose = onClose
+                        )
+                    }
                 }
             }
         }
@@ -65,58 +85,48 @@ fun DialogForm(
 
 @Composable
 fun DialogTitle(titleText: String) {
-    Box(
-//        modifier = Modifier.gravity(Alignment.CenterStart),
-        modifier = Modifier.padding(24.dp)
-    ) {
-        Text(
-            text = titleText,
-            style = MaterialTheme.typography.h6
-        )
-    }
-}
-
-@Composable
-fun DialogContent(
-    value: TextFieldValue,
-    onChange: (value: TextFieldValue) -> Unit
-) {
-    Column(modifier = Modifier.padding(24.dp)) {
-        Text("Name:")
-        TextField(
-            value = value,
-            onValueChange = onChange
-        )
-    }
-
+    Text(
+        text = titleText,
+        style = MaterialTheme.typography.h6
+    )
 }
 
 @Composable
 fun DialogActions(
-    onOk: () -> Unit,
+    disabled: Boolean,
+    primaryText: String = "Apply",
+    onApply: () -> Unit,
     onClose: () -> Unit
 ) {
-    Box(
-        padding = 8.dp
-//        modifier = Modifier.gravity(Alignment.CenterEnd),
-    ) {
-        Row {
-            Button(onClick = onOk) {
-                Text("Ok")
+    Row {
+        Box(modifier = Modifier.weight(1f)) {
+            if (disabled) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    backgroundColor = Color.LightGray,
+                    onClick = onApply
+                ) {
+                    Text(primaryText)
+                }
             }
-            Spacer(Modifier.preferredWidth(8.dp))
-            Button(onClick = onClose) {
+            else {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = onApply
+                ) {
+                    Text(primaryText)
+                }
+            }
+        }
+        Spacer(Modifier.preferredWidth(8.dp))
+        Box(modifier = Modifier.weight(1f)) {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                backgroundColor = Color.Transparent,
+                onClick = onClose
+            ) {
                 Text("Dismiss")
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewDialogContent() {
-    DialogContent(
-        TextFieldValue("123"),
-        onChange = {}
-    )
 }

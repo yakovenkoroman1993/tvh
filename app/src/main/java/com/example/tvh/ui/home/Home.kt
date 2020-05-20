@@ -7,7 +7,7 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.Text
 import androidx.ui.layout.*
 import androidx.ui.material.*
-import androidx.ui.unit.dp
+import androidx.ui.material.ripple.ripple
 import com.example.tvh.entity.Group
 import com.example.tvh.services.Navigator
 
@@ -26,6 +26,7 @@ fun Home(
         HomeBody {
             groups.forEach { group ->
                 Clickable(
+                    modifier = Modifier.ripple(),
                     onClick = {
                         onNavigateToGroup(
                             Navigator.Screen.GroupScreen(group)
@@ -50,17 +51,22 @@ fun GroupItem(
     onCopy: () -> Unit,
     onRemove: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
-    ) {
-        Text(
-            text = text,
-//            modifier = Flexible(1f) wraps Gravity.Center,
-            style = MaterialTheme.typography.subtitle1
-        )
-
-        Row {
-            TextButton(onClick = onCopy) {
+    Row(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.weight(1f)) {
+            ProvideEmphasis(EmphasisAmbient.current.high) {
+                Text(text, style = MaterialTheme.typography.subtitle1)
+            }
+            ProvideEmphasis(EmphasisAmbient.current.medium) {
+                Row {
+                    Text(text = "Creator", style = MaterialTheme.typography.body2)
+                    Text(text = " - ${1} min read", style = MaterialTheme.typography.body2)
+                }
+            }
+        }
+        Row(
+            modifier = Modifier.padding(top = 2.dp)
+        ) {
+            Button(onClick = onCopy) {
                 Text("Copy")
             }
             Spacer(Modifier.preferredWidth(4.dp))
