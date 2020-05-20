@@ -1,15 +1,17 @@
 package com.example.tvh.ui.group
 
 import androidx.compose.Composable
-import androidx.compose.unaryPlus
-import androidx.ui.core.Text
-import androidx.ui.core.dp
-import androidx.ui.core.sp
+import androidx.ui.core.Modifier
+import androidx.ui.foundation.Icon
+import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
-import androidx.ui.layout.Padding
+import androidx.ui.layout.padding
 import androidx.ui.material.*
+import androidx.ui.material.icons.Icons
+import androidx.ui.material.icons.filled.ArrowBack
 import androidx.ui.text.TextStyle
 import androidx.ui.tooling.preview.Preview
+import androidx.ui.unit.dp
 import com.example.tvh.di.AppContainer
 import com.example.tvh.services.Navigator
 
@@ -21,11 +23,10 @@ fun GroupScreen(
 ) {
     val navigator = appContainer.navigator
 
-    val style = +MaterialTheme.typography()
     Group(
         title = title,
         body = text,
-        style = style.subtitle1 ,
+        style = MaterialTheme.typography.subtitle1,
         onNavigateTo = {
             navigator.navigateTo(it)
         }
@@ -42,28 +43,23 @@ fun Group(
     Column {
         TopAppBar(
             title = {
-                Padding(padding = 12.dp) {
-                    Text(
-                        text = "Details for $title",
-                        style = style
-                    )
-                }
+                Text(
+                    text = "Details for $title",
+                    modifier = Modifier.padding(12.dp),
+                    style = style
+                )
             },
             navigationIcon = {
-                Button(
-                    text = "<",
-                    style = ContainedButtonStyle().copy(
-                        textStyle = TextStyle(fontSize = 24.sp)
-                    ),
-                    onClick = {
-                        onNavigateTo(Navigator.Screen.HomeScreen)
-                    }
-                )
+                IconButton(onClick = { onNavigateTo(Navigator.Screen.HomeScreen) }) {
+                    Icon(Icons.Filled.ArrowBack)
+                }
             }
         )
-        Padding(padding = 12.dp) {
-            Text(body)
-        }
+
+        Text(
+            text = body,
+            modifier = Modifier.padding(12.dp)
+        )
     }
 }
 

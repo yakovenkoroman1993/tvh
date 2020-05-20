@@ -14,8 +14,6 @@ abstract class ThreadsafeExecutor {
         Handler(Looper.getMainLooper())
     }
 
-    abstract fun <T>run(command: () -> T, callback: (T) -> Unit = {})
-
     protected fun <T>run(
         command: () -> T,
         onSuccess: (T) -> Unit = {},

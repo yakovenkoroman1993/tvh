@@ -2,14 +2,13 @@ package com.example.tvh.ui.common
 
 import androidx.compose.Composable
 import androidx.compose.state
-import androidx.compose.unaryPlus
 import androidx.ui.core.*
-import androidx.ui.foundation.Dialog
+import androidx.ui.foundation.*
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.*
-import androidx.ui.material.surface.Surface
 import androidx.ui.tooling.preview.Preview
+import androidx.ui.unit.dp
 
 @Composable
 fun DialogButton(
@@ -18,24 +17,18 @@ fun DialogButton(
     onOk: () -> Unit = {},
     children: @Composable() () -> Unit
 ) {
-    val visibleModel = +state { visible }
+    val (visible, setVisible) = state { visible }
 
-    Button(
-        text,
-        style = ContainedButtonStyle(),
-        onClick = {
-            visibleModel.value = true
-        }
-    )
-    if (visibleModel.value) {
+    Button(onClick = { setVisible(true) }) {
+        Text(text)
+    }
+    if (visible) {
         DialogForm(
             titleText = text,
-            onClose = {
-                visibleModel.value = false
-            },
+            onClose = { setVisible(false) },
             onOk = {
                 onOk()
-                visibleModel.value = false
+                setVisible(false)
             }
         ) {
             children()
@@ -52,13 +45,13 @@ fun DialogForm(
 ) {
     Dialog(onCloseRequest = onClose) {
         Surface(shape = RoundedCornerShape(4.dp)) {
-            Container(/*width = AlertDialogWidth*/) {
+            Box {
                 Column {
                     DialogTitle(titleText)
 
                     children()
 
-                    HeightSpacer(height = 28.dp)
+                    Spacer(Modifier.preferredHeight(28.dp))
 
                     DialogActions(
                         onOk = onOk,
@@ -72,33 +65,30 @@ fun DialogForm(
 
 @Composable
 fun DialogTitle(titleText: String) {
-    Container(
-        alignment = Alignment.CenterLeft,
-        padding = EdgeInsets(
-            left = 24.dp, top = 24.dp, right = 24.dp, bottom = 0.dp
-        )
+    Box(
+//        modifier = Modifier.gravity(Alignment.CenterStart),
+        modifier = Modifier.padding(24.dp)
     ) {
-        val textStyle = (+MaterialTheme.typography()).h6
-        CurrentTextStyleProvider(textStyle) {
-            Text(titleText)
-        }
+        Text(
+            text = titleText,
+            style = MaterialTheme.typography.h6
+        )
     }
 }
 
 @Composable
 fun DialogContent(
-    value: EditorModel,
-    onChange: (value: EditorModel) -> Unit
+    value: TextFieldValue,
+    onChange: (value: TextFieldValue) -> Unit
 ) {
-    Padding(padding = 24.dp) {
-        Column {
-            Text("Name:")
-            TextField(
-                value = value,
-                onValueChange = onChange
-            )
-        }
+    Column(modifier = Modifier.padding(24.dp)) {
+        Text("Name:")
+        TextField(
+            value = value,
+            onValueChange = onChange
+        )
     }
+
 }
 
 @Composable
@@ -106,15 +96,18 @@ fun DialogActions(
     onOk: () -> Unit,
     onClose: () -> Unit
 ) {
-    Container(
-        ExpandedWidth,
-        padding = EdgeInsets(all = 8.dp),
-        alignment = Alignment.CenterRight
+    Box(
+        padding = 8.dp
+//        modifier = Modifier.gravity(Alignment.CenterEnd),
     ) {
         Row {
-            Button("Ok", onClick = onOk)
-            WidthSpacer(8.dp)
-            Button("Dismiss", onClick = onClose)
+            Button(onClick = onOk) {
+                Text("Ok")
+            }
+            Spacer(Modifier.preferredWidth(8.dp))
+            Button(onClick = onClose) {
+                Text("Dismiss")
+            }
         }
     }
 }
@@ -123,7 +116,7 @@ fun DialogActions(
 @Composable
 fun PreviewDialogContent() {
     DialogContent(
-        EditorModel("123"),
+        TextFieldValue("123"),
         onChange = {}
     )
 }

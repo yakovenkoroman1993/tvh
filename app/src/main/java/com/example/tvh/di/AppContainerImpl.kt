@@ -27,11 +27,21 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     private val db: Database by lazy {
         Room
             .databaseBuilder(applicationContext, Database::class.java, "tvh")
+            .addMigrations(
+                Database.MIGRATION_1_2
+            )
             .build()
     }
 
     private val executor: Executor by lazy {
         Executor(ui)
+    }
+
+    private val auditExecutor: AuditExecutor by lazy {
+        AuditExecutor(
+            db = db,
+            executor = executor
+        )
     }
 
     override val navigator: Navigator by lazy {
@@ -54,7 +64,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
         HomeCommander(
             db = db,
             repo = homeRepo,
-            executor = executor
+            executor = auditExecutor
         )
     }
 

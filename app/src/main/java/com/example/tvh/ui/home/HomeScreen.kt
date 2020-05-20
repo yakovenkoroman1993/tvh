@@ -2,7 +2,6 @@ package com.example.tvh.ui.home
 
 import androidx.compose.Composable
 import androidx.compose.onActive
-import androidx.compose.unaryPlus
 import com.example.tvh.di.AppContainer
 
 @Composable
@@ -11,7 +10,7 @@ fun HomeScreen(appContainer: AppContainer) {
     val commander = appContainer.homeCommander
     val navigator = appContainer.navigator
 
-    +onActive {
+    onActive {
         repo.loadHome()
     }
 

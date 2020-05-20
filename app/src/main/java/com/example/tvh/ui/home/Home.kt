@@ -1,14 +1,13 @@
 package com.example.tvh.ui.home
 
 import androidx.compose.*
-import androidx.ui.core.Text
-import androidx.ui.core.dp
+import androidx.ui.core.Modifier
+import androidx.ui.unit.dp
 import androidx.ui.foundation.Clickable
+import androidx.ui.foundation.Text
 import androidx.ui.layout.*
-import androidx.ui.material.Button
-import androidx.ui.material.ContainedButtonStyle
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.TextButtonStyle
+import androidx.ui.material.*
+import androidx.ui.unit.dp
 import com.example.tvh.entity.Group
 import com.example.tvh.services.Navigator
 
@@ -52,26 +51,22 @@ fun GroupItem(
     onRemove: () -> Unit
 ) {
     Row(
-        modifier = Spacing(left = 16.dp, right = 16.dp, top = 5.dp, bottom = 5.dp)
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
     ) {
         Text(
             text = text,
-            modifier = Flexible(1f) wraps Gravity.Center,
-            style = (+MaterialTheme.typography()).subtitle1
+//            modifier = Flexible(1f) wraps Gravity.Center,
+            style = MaterialTheme.typography.subtitle1
         )
 
         Row {
-            Button(
-                "Copy",
-                style = ContainedButtonStyle(),
-                onClick = onCopy
-            )
-            WidthSpacer(width = 4.dp)
-            Button(
-                "Remove",
-                style = TextButtonStyle(),
-                onClick = onRemove
-            )
+            TextButton(onClick = onCopy) {
+                Text("Copy")
+            }
+            Spacer(Modifier.preferredWidth(4.dp))
+            TextButton(onClick = onRemove) {
+                Text("Remove")
+            }
         }
     }
 }

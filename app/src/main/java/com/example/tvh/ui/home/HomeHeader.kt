@@ -2,12 +2,12 @@ package com.example.tvh.ui.home
 
 import androidx.compose.Composable
 import androidx.compose.state
-import androidx.compose.unaryPlus
-import androidx.ui.core.EditorModel
-import androidx.ui.core.Text
-import androidx.ui.core.TextField
-import androidx.ui.core.dp
+import androidx.ui.core.Modifier
+import androidx.ui.foundation.Text
+import androidx.ui.foundation.TextField
+import androidx.ui.foundation.TextFieldValue
 import androidx.ui.layout.*
+import androidx.ui.unit.dp
 import com.example.tvh.entity.Group
 import com.example.tvh.ui.common.ActionsRow
 import com.example.tvh.ui.common.DialogButton
@@ -16,7 +16,7 @@ import com.example.tvh.ui.common.DialogButton
 fun HomeHeader(
     onAddGroup: (group: Group) -> Unit
 ) {
-    val editorModel = +state { EditorModel() }
+    val (textFieldValue, setTextFieldValue) = state { TextFieldValue() }
 
     Column {
         ActionsRow {
@@ -24,21 +24,17 @@ fun HomeHeader(
                 text = "New",
                 onOk = {
                     onAddGroup(
-                        Group(name = editorModel.value.text)
+                        Group(name = textFieldValue.text)
                     )
-                    editorModel.value = EditorModel("")
+                    setTextFieldValue(TextFieldValue(text = ""))
                 }
             ) {
-                Padding(padding = 24.dp) {
-                    Column {
-                        Text("Name:")
-                        TextField(
-                            value = editorModel.value,
-                            onValueChange = {
-                                editorModel.value = it
-                            }
-                        )
-                    }
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("Name:")
+                    TextField(
+                        value = textFieldValue,
+                        onValueChange = setTextFieldValue
+                    )
                 }
             }
         }

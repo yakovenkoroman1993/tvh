@@ -1,10 +1,10 @@
 package com.example.tvh.ui
 
 import androidx.ui.graphics.Color
-import androidx.ui.material.ColorPalette
+import androidx.ui.material.darkColorPalette
+import androidx.ui.material.lightColorPalette
 
-
-val lightThemeColors = ColorPalette(
+val lightThemeColors = lightColorPalette(
     primary = Color(0xFFDD0D3C),
     primaryVariant = Color(0xFFC20029),
     onPrimary = Color.White,
@@ -18,7 +18,7 @@ val lightThemeColors = ColorPalette(
     onError = Color.White
 )
 
-val darkThemeColors = ColorPalette(
+val darkThemeColors = darkColorPalette(
     primary = Color(0xFFEA6D7E),
     primaryVariant = Color(0xFFDD0D3E),
     onPrimary = Color.Black,

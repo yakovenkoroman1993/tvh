@@ -9,14 +9,17 @@ interface GroupDao {
     @Query("SELECT * FROM `group`")
     fun findAll(): List<Group>
 
-    @Query("SELECT * FROM `Group` WHERE uid = :uid")
+    @Query("SELECT * FROM `group` WHERE uid = :uid")
     fun find(uid: Int): Group
+
+    @Query("SELECT uid FROM `group` ORDER BY uid DESC LIMIT 1")
+    fun lastUid(): Int
 
     @Insert
     fun create(vararg groups: Group)
 
-//    @Update
-//    fun update(group: Group)
+    @Update
+    fun update(group: Group)
 
     @Delete
     fun delete(group: Group)
