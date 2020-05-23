@@ -20,8 +20,10 @@ fun Home(
     onRemoveGroup: (group: Group) -> Unit = {},
     onNavigateToGroup: (screen: Navigator.Screen) -> Unit = {}
 ) {
+    val rowModifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
     Column {
         HomeHeader(
+            actionsRowModifier = rowModifier,
             onAddGroup = onAddGroup
         )
         HomeBody {
@@ -35,6 +37,7 @@ fun Home(
                     }
                 ) {
                     GroupItem(
+                        modifier = rowModifier,
                         group = group,
                         onCopy = {
                             onAddGroup(
@@ -55,11 +58,12 @@ fun Home(
 
 @Composable
 fun GroupItem(
+    modifier: Modifier = Modifier,
     group: Group,
     onCopy: () -> Unit,
     onRemove: () -> Unit
 ) {
-    Row(modifier = Modifier.padding(8.dp)) {
+    Row(modifier = modifier) {
         Column(modifier = Modifier.weight(1f)) {
             ProvideEmphasis(EmphasisAmbient.current.high) {
                 Text(group.name, style = MaterialTheme.typography.subtitle1)

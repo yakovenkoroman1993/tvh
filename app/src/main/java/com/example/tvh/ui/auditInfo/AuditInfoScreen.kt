@@ -68,15 +68,11 @@ fun AuditLogItem(log: Audit) {
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
-                    text = log.createdAt,
+                    text = "${log.entityType}  with uid = ${log.entityUid}",
                     style = MaterialTheme.typography.subtitle1
                 )
                 Text(
-                    text = "${log.entityType}  with uid = ${log.entityUid} was ${log.type}D",
-                    style = MaterialTheme.typography.subtitle2
-                )
-                Text(
-                    text = " - ${Utils.DateTime.getPrettyTime(log.createdAt)}",
+                    text = "${log.type}D ${Utils.DateTime.getPrettyTime(log.createdAt)}",
                     style = MaterialTheme.typography.body2
                 )
             }

@@ -11,10 +11,11 @@ import androidx.ui.unit.dp
 
 @Composable
 fun ActionsRow(
+    modifier: Modifier,
     children: @Composable() RowScope.() -> Unit
 ) {
     Row(
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -32,7 +33,7 @@ fun ActionsRow(
 @Preview
 @Composable
 fun PreviewActionsRow() {
-    ActionsRow {
+    ActionsRow(modifier = Modifier) {
         Text("children")
     }
 }

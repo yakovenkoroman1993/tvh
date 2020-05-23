@@ -6,7 +6,7 @@ import com.example.tvh.entity.Audit
 @Dao
 interface AuditDao {
 
-    @Query("SELECT * FROM `audit`")
+    @Query("SELECT * FROM `audit` ORDER BY created_at DESC")
     fun findAll(): List<Audit>
 
     @Query("SELECT * FROM `audit` WHERE uid = :uid")

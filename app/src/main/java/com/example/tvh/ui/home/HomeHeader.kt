@@ -2,6 +2,7 @@ package com.example.tvh.ui.home
 
 import androidx.compose.Composable
 import androidx.compose.state
+import androidx.ui.core.Modifier
 import androidx.ui.foundation.TextFieldValue
 import androidx.ui.layout.*
 import com.example.tvh.entity.Group
@@ -11,12 +12,13 @@ import com.example.tvh.ui.common.TextFieldWithHint
 
 @Composable
 fun HomeHeader(
+    actionsRowModifier: Modifier = Modifier,
     onAddGroup: (group: Group) -> Unit
 ) {
     val (textFieldValue, setTextFieldValue) = state { TextFieldValue() }
 
     Column {
-        ActionsRow {
+        ActionsRow(modifier = actionsRowModifier) {
             DialogButton(
                 buttonText = "Create",
                 dialogTitle = "New Group",
