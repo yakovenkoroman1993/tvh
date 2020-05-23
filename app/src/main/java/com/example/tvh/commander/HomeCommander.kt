@@ -12,10 +12,7 @@ class HomeCommander(
 ) {
     fun addGroup(g: Group) {
         executor.runToCreate(Group::class, {
-            db.groupDao().create(
-                g.copy(uid = 0)
-            )
-            db.groupDao().lastUid()
+            db.groupDao().create(g.copy(uid = 0)).first()
         }) {
             repo.loadHome()
         }
@@ -24,7 +21,7 @@ class HomeCommander(
     fun removeGroup(g: Group) {
         executor.runToDelete(Group::class, {
             db.groupDao().delete(g)
-            g.uid
+            g.uid.toLong()
         }) {
             repo.loadHome()
         }

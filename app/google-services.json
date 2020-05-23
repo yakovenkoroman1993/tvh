@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "754878821129",
+    "firebase_url": "https://tvh-android.firebaseio.com",
+    "project_id": "tvh-android",
+    "storage_bucket": "tvh-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754878821129:android:c747aa80ad03b7f15519d8",
+        "android_client_info": {
+          "package_name": "com.example.tvh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "754878821129-85cuu8ra3rcbrmdcq9seuuh2vc12qu37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtkTi4YBHEankCONJCNIvlbwj7kyt9U2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "754878821129-85cuu8ra3rcbrmdcq9seuuh2vc12qu37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -25,30 +25,40 @@ interface AppContainer {
  */
 class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
-    private val db: AppDatabase by lazy {
+    private val device by lazy {
+        DeviceInfo(applicationContext)
+    }
+
+    private val db by lazy {
         AppDatabase.create(applicationContext)
     }
 
-    private val executor: Executor by lazy {
+    private val dbRemote by lazy {
+        RemoteDatabase(applicationContext)
+    }
+
+    private val executor by lazy {
         Executor(ui)
     }
 
-    private val auditExecutor: AuditExecutor by lazy {
+    private val auditExecutor by lazy {
         AuditExecutor(
             db = db,
-            executor = executor
+            dbRemote = dbRemote,
+            executor = executor,
+            device = device
         )
     }
 
-    override val navigator: Navigator by lazy {
+    override val navigator by lazy {
         Navigator()
     }
 
-    override val ui: UiModel by lazy {
+    override val ui by lazy {
         UiModel()
     }
 
-    override val homeRepo: HomeRepo by lazy {
+    override val homeRepo by lazy {
         HomeRepo(
             db = db,
             ui = ui,
@@ -56,7 +66,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
         )
     }
 
-    override val homeCommander: HomeCommander by lazy {
+    override val homeCommander by lazy {
         HomeCommander(
             db = db,
             repo = homeRepo,
@@ -64,7 +74,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
         )
     }
 
-    override val auditInfoRepo: AuditInfoRepo by lazy {
+    override val auditInfoRepo by lazy {
         AuditInfoRepo(
             db = db,
             ui = ui,

@@ -72,6 +72,10 @@ fun AuditLogItem(log: Audit) {
                     style = MaterialTheme.typography.subtitle1
                 )
                 Text(
+                    text = "Published: ${ if (log.published) "Yes" else "No" }",
+                    style = MaterialTheme.typography.subtitle2
+                )
+                Text(
                     text = "${log.type}D ${Utils.DateTime.getPrettyTime(log.createdAt)}",
                     style = MaterialTheme.typography.body2
                 )

@@ -13,11 +13,11 @@ interface AuditDao {
     fun find(uid: Int): Audit
 
     @Insert
-    fun create(vararg audit: Audit)
+    fun create(vararg audit: Audit): List<Long>
 
     @Update
-    fun update(audit: Audit)
+    fun update(vararg audit: Audit): Int
 
     @Delete
-    fun delete(audit: Audit)
+    fun delete(audit: Audit): Int
 }

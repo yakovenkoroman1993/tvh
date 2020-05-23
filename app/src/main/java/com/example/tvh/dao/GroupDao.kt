@@ -12,15 +12,12 @@ interface GroupDao {
     @Query("SELECT * FROM `group` WHERE uid = :uid")
     fun find(uid: Int): Group
 
-    @Query("SELECT uid FROM `group` ORDER BY uid DESC LIMIT 1")
-    fun lastUid(): Int
-
     @Insert
-    fun create(vararg groups: Group)
+    fun create(vararg groups: Group): List<Long>
 
     @Update
-    fun update(group: Group)
+    fun update(group: Group): Int
 
     @Delete
-    fun delete(group: Group)
+    fun delete(group: Group): Int
 }

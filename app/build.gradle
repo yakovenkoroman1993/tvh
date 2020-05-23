@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -42,6 +43,9 @@ android {
 }
 
 configurations {
+    // to fix "com.google.common.util.concurrent.ListenableFuture Duplicate Class"
+    all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+
     ktlint
 }
 
@@ -71,6 +75,7 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
 }
 
 task ktlint(type: JavaExec, group: "verification") {
