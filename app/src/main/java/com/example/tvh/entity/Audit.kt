@@ -18,7 +18,7 @@ data class Audit (
     @ColumnInfo(name = "entity_type") val entityType: String,
     @ColumnInfo(name = "entity_uid") val entityUid: Int,
 
-    @ColumnInfo(name = "created_at") val createdAt: String = Date().toString(),
+    @ColumnInfo(name = "created_at") val createdAt: String = Date().time.toString(),
     @ColumnInfo(name = "updated_at") val updatedAt: String = createdAt,
 
     @ColumnInfo(name = "published") val published: Boolean = false

@@ -5,7 +5,7 @@ import com.example.tvh.entity.AuditType
 import kotlin.reflect.KClass
 
 class AuditExecutor(
-    private val db: Database,
+    private val db: AppDatabase,
     private val executor: Executor
 ) {
     private fun runInThreads(command: () -> Int, callback: () -> Unit, audits: (uid: Int) -> Unit) {

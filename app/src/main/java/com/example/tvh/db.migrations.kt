@@ -2,8 +2,9 @@ package com.example.tvh
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.util.*
 
-class Migration1To2 : Migration(1, 2) {
+private class Migration1To2 : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL(
             """
@@ -19,4 +20,45 @@ class Migration1To2 : Migration(1, 2) {
             """.trimIndent()
         )
     }
+}
+
+private class Migration2To3 : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        val defaultDate = Date().toString()
+        database.execSQL(
+            """
+                ALTER TABLE `Group` ADD COLUMN created_at TEXT NOT NULL DEFAULT "$defaultDate" 
+            """.trimIndent()
+        )
+        database.execSQL(
+            """
+                ALTER TABLE `Group` ADD COLUMN updated_at TEXT NOT NULL DEFAULT "$defaultDate"
+            """.trimIndent()
+        )
+    }
+}
+
+private class Migration3To4 : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        val defaultDateTime = Date().time.toString()
+        database.execSQL(
+            """
+                UPDATE `Group` SET created_at = "$defaultDateTime", updated_at = "$defaultDateTime"  
+            """.trimIndent()
+        )
+        database.execSQL(
+            """
+                UPDATE `Audit` SET created_at = "$defaultDateTime", updated_at = "$defaultDateTime" 
+            """.trimIndent()
+        )
+    }
+}
+
+fun getDatabaseMigrations(): Array<Migration> {
+    return arrayOf(
+        Migration1To2(),
+        Migration2To3(),
+        Migration3To4()
+        // ...
+    )
 }

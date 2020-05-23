@@ -8,8 +8,8 @@ import java.util.*
 @Entity
 data class Group(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-    @ColumnInfo(name = "name") val name: String
+    @ColumnInfo(name = "name") val name: String,
 
-//    @ColumnInfo(name = "created_at") val createdAt: String = Date().toString(),
-//    @ColumnInfo(name = "updated_at") val updatedAt: String = createdAt
+    @ColumnInfo(name = "created_at") val createdAt: String = Date().time.toString(),
+    @ColumnInfo(name = "updated_at") val updatedAt: String = createdAt
 )

@@ -1,7 +1,6 @@
 package com.example.tvh.di
 
 import android.content.Context
-import androidx.room.Room
 import com.example.tvh.commander.HomeCommander
 import com.example.tvh.model.UiModel
 import com.example.tvh.repo.AuditInfoRepo
@@ -26,13 +25,8 @@ interface AppContainer {
  */
 class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
-    private val db: Database by lazy {
-        Room
-            .databaseBuilder(applicationContext, Database::class.java, "tvh")
-            .addMigrations(
-                Database.MIGRATION_1_2
-            )
-            .build()
+    private val db: AppDatabase by lazy {
+        AppDatabase.create(applicationContext)
     }
 
     private val executor: Executor by lazy {

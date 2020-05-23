@@ -3,10 +3,10 @@ package com.example.tvh.commander
 import com.example.tvh.entity.Group
 import com.example.tvh.repo.HomeRepo
 import com.example.tvh.services.AuditExecutor
-import com.example.tvh.services.Database
+import com.example.tvh.services.AppDatabase
 
 class HomeCommander(
-    private val db: Database,
+    private val db: AppDatabase,
     private val repo: HomeRepo,
     private val executor: AuditExecutor
 ) {

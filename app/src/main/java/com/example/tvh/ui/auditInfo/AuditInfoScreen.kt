@@ -5,13 +5,18 @@ import androidx.compose.onActive
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
+import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.Row
+import androidx.ui.layout.fillMaxWidth
 import androidx.ui.layout.padding
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Surface
 import androidx.ui.unit.dp
 import com.example.tvh.di.AppContainer
 import com.example.tvh.entity.Audit
+import com.example.tvh.entity.AuditType
+import com.example.tvh.utils.Utils
 
 @Composable
 fun AuditInfoScreen(appContainer: AppContainer) {
@@ -51,19 +56,31 @@ fun AuditInfo(logs: List<Audit>) {
 
 @Composable
 fun AuditLogItem(log: Audit) {
-    Row(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
-    ) {
-        Column {
-            Text(
-                text = log.createdAt,
-                style = MaterialTheme.typography.subtitle1
-            )
-            Text(
-                text = "${log.entityType}  with uid = ${log.entityUid} was ${log.type}D",
-                style = MaterialTheme.typography.subtitle2
-            )
-        }
+    val backGroundColor = when (log.type) {
+        AuditType.CREATE.toString() -> Color.Green
+        AuditType.DELETE.toString() -> Color.Red
+        else -> throw Error("Unknown audit type")
+    }
+    Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)) {
+        Surface(
+            color = backGroundColor,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(
+                    text = log.createdAt,
+                    style = MaterialTheme.typography.subtitle1
+                )
+                Text(
+                    text = "${log.entityType}  with uid = ${log.entityUid} was ${log.type}D",
+                    style = MaterialTheme.typography.subtitle2
+                )
+                Text(
+                    text = " - ${Utils.DateTime.getPrettyTime(log.createdAt)}",
+                    style = MaterialTheme.typography.body2
+                )
+            }
 
+        }
     }
 }

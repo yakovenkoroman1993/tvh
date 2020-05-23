@@ -10,6 +10,8 @@ import androidx.ui.material.*
 import androidx.ui.material.ripple.ripple
 import com.example.tvh.entity.Group
 import com.example.tvh.services.Navigator
+import com.example.tvh.utils.Utils
+import java.util.*
 
 @Composable
 fun Home(
@@ -18,7 +20,6 @@ fun Home(
     onRemoveGroup: (group: Group) -> Unit = {},
     onNavigateToGroup: (screen: Navigator.Screen) -> Unit = {}
 ) {
-
     Column {
         HomeHeader(
             onAddGroup = onAddGroup
@@ -34,8 +35,15 @@ fun Home(
                     }
                 ) {
                     GroupItem(
-                        text = group.name,
-                        onCopy = { onAddGroup(group) },
+                        group = group,
+                        onCopy = {
+                            onAddGroup(
+                                group.copy(
+                                    createdAt = Date().time.toString(),
+                                    updatedAt = Date().time.toString()
+                                )
+                            )
+                        },
                         onRemove = { onRemoveGroup(group) }
                     )
                 }
@@ -47,19 +55,25 @@ fun Home(
 
 @Composable
 fun GroupItem(
-    text: String,
+    group: Group,
     onCopy: () -> Unit,
     onRemove: () -> Unit
 ) {
     Row(modifier = Modifier.padding(8.dp)) {
         Column(modifier = Modifier.weight(1f)) {
             ProvideEmphasis(EmphasisAmbient.current.high) {
-                Text(text, style = MaterialTheme.typography.subtitle1)
+                Text(group.name, style = MaterialTheme.typography.subtitle1)
             }
             ProvideEmphasis(EmphasisAmbient.current.medium) {
                 Row {
-                    Text(text = "Creator", style = MaterialTheme.typography.body2)
-                    Text(text = " - ${1} min read", style = MaterialTheme.typography.body2)
+                    Text(
+                        text = "Created",
+                        style = MaterialTheme.typography.body2
+                    )
+                    Text(
+                        text = " - ${Utils.DateTime.getPrettyTime(group.createdAt)}",
+                        style = MaterialTheme.typography.body2
+                    )
                 }
             }
         }
