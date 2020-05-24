@@ -7,15 +7,15 @@ import androidx.ui.foundation.Text
 import androidx.ui.material.*
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.List
-import com.example.tvh.di.AppContainer
+import com.example.tvh.di.IAppContainer
 import com.example.tvh.services.Navigator
 import com.example.tvh.ui.group.GroupScreen
 import com.example.tvh.ui.auditInfo.AuditInfoScreen
 import com.example.tvh.ui.home.HomeScreen
 
 @Composable
-fun App(appContainer: AppContainer) {
-    val navigator = appContainer.navigator
+fun App(IAppContainer: IAppContainer) {
+    val navigator = IAppContainer.navigator
 
     val (scaffoldState, setScaffoldState) = state { ScaffoldState() }
 
@@ -47,13 +47,13 @@ fun App(appContainer: AppContainer) {
             bodyContent = {
                 Crossfade(navigator.getCurrentScreen()) { screen ->
                     when (screen) {
-                        is Navigator.Screen.HomeScreen -> HomeScreen(appContainer)
+                        is Navigator.Screen.HomeScreen -> HomeScreen(IAppContainer)
                         is Navigator.Screen.GroupScreen -> GroupScreen(
                             title = screen.group.name,
                             text = screen.group.uid.toString(),
-                            appContainer = appContainer
+                            IAppContainer = IAppContainer
                         )
-                        is Navigator.Screen.AuditInfoScreen -> AuditInfoScreen(appContainer)
+                        is Navigator.Screen.AuditInfoScreen -> AuditInfoScreen(IAppContainer)
                     }
                 }
             }

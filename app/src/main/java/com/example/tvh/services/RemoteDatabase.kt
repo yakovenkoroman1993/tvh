@@ -7,7 +7,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class RemoteDatabase(applicationContext: Context) {
+interface IRemoteDatabase {
+    fun collection(name: String): CollectionReference
+}
+
+class RemoteDatabase(applicationContext: Context) : IRemoteDatabase {
     enum class Collections {
         Audit
     }
@@ -19,7 +23,7 @@ class RemoteDatabase(applicationContext: Context) {
         db = Firebase.firestore
     }
 
-    fun collection(name: String): CollectionReference {
+    override fun collection(name: String): CollectionReference {
         return db.collection(name)
     }
 }

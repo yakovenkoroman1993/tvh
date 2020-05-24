@@ -1,6 +1,7 @@
 package com.example.tvh.ui
 
 import androidx.compose.Composable
+import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
@@ -85,6 +86,7 @@ private fun DrawerButton(
         TextButton(onClick = action, modifier = Modifier.fillMaxWidth()) {
             Row(
                 horizontalArrangement = Arrangement.Start,
+                verticalGravity = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 icon()

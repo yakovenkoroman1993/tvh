@@ -13,15 +13,15 @@ import androidx.ui.layout.padding
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
 import androidx.ui.unit.dp
-import com.example.tvh.di.AppContainer
+import com.example.tvh.di.IAppContainer
 import com.example.tvh.entity.Audit
 import com.example.tvh.entity.AuditType
 import com.example.tvh.utils.Utils
 
 @Composable
-fun AuditInfoScreen(appContainer: AppContainer) {
-    val repo = appContainer.auditInfoRepo
-    val ui = appContainer.ui
+fun AuditInfoScreen(IAppContainer: IAppContainer) {
+    val repo = IAppContainer.auditInfoRepo
+    val ui = IAppContainer.ui
 
     onActive {
         repo.loadAudit()

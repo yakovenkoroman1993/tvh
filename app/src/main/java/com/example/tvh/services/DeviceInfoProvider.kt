@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings.Secure
 
+interface IDeviceInfoProvider {
+    val uid: String
+}
+
 @SuppressLint("HardwareIds")
-class DeviceInfo(private val applicationContext: Context) {
-    val uid: String by lazy {
+class DeviceInfoProvider(private val applicationContext: Context) : IDeviceInfoProvider {
+    override val uid: String by lazy {
         Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
     }
 }

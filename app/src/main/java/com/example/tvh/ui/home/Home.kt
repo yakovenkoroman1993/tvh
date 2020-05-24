@@ -28,28 +28,24 @@ fun Home(
         )
         HomeBody {
             groups.forEach { group ->
-                Clickable(
-                    modifier = Modifier.ripple(),
+                GroupItem(
+                    modifier = rowModifier,
+                    group = group,
+                    onCopy = {
+                        onAddGroup(
+                            group.copy(
+                                createdAt = Date().time.toString(),
+                                updatedAt = Date().time.toString()
+                            )
+                        )
+                    },
+                    onRemove = { onRemoveGroup(group) },
                     onClick = {
                         onNavigateToGroup(
                             Navigator.Screen.GroupScreen(group)
                         )
                     }
-                ) {
-                    GroupItem(
-                        modifier = rowModifier,
-                        group = group,
-                        onCopy = {
-                            onAddGroup(
-                                group.copy(
-                                    createdAt = Date().time.toString(),
-                                    updatedAt = Date().time.toString()
-                                )
-                            )
-                        },
-                        onRemove = { onRemoveGroup(group) }
-                    )
-                }
+                )
             }
         }
     }
@@ -61,19 +57,19 @@ fun GroupItem(
     modifier: Modifier = Modifier,
     group: Group,
     onCopy: () -> Unit,
-    onRemove: () -> Unit
+    onRemove: () -> Unit,
+    onClick: () -> Unit
 ) {
     Row(modifier = modifier) {
-        Column(modifier = Modifier.weight(1f)) {
-            ProvideEmphasis(EmphasisAmbient.current.high) {
-                Text(group.name, style = MaterialTheme.typography.subtitle1)
-            }
-            ProvideEmphasis(EmphasisAmbient.current.medium) {
-                Row {
-                    Text(
-                        text = "Created",
-                        style = MaterialTheme.typography.body2
-                    )
+        Clickable(
+            modifier = Modifier.ripple(),
+            onClick = onClick
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                ProvideEmphasis(EmphasisAmbient.current.high) {
+                    Text(group.name, style = MaterialTheme.typography.subtitle1)
+                }
+                ProvideEmphasis(EmphasisAmbient.current.medium) {
                     Text(
                         text = " - ${Utils.DateTime.getPrettyTime(group.createdAt)}",
                         style = MaterialTheme.typography.body2

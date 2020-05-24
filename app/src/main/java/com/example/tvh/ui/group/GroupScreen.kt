@@ -12,16 +12,16 @@ import androidx.ui.material.icons.filled.ArrowBack
 import androidx.ui.text.TextStyle
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
-import com.example.tvh.di.AppContainer
+import com.example.tvh.di.IAppContainer
 import com.example.tvh.services.Navigator
 
 @Composable
 fun GroupScreen(
     text: String,
     title: String,
-    appContainer: AppContainer
+    IAppContainer: IAppContainer
 ) {
-    val navigator = appContainer.navigator
+    val navigator = IAppContainer.navigator
 
     Group(
         title = title,

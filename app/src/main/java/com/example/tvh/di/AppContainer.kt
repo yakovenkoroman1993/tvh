@@ -10,12 +10,13 @@ import com.example.tvh.services.*
 /**
  * Dependency Injection container at the application level.
  */
-interface AppContainer {
-    val navigator: Navigator
+interface IAppContainer {
+    val navigator: INavigator
     val ui: UiModel
     val homeRepo: HomeRepo
     val homeCommander: HomeCommander
     val auditInfoRepo: AuditInfoRepo
+    fun destroy()
 }
 
 /**
@@ -23,30 +24,37 @@ interface AppContainer {
  *
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
-class AppContainerImpl(private val applicationContext: Context) : AppContainer {
-
+class AppContainer(private val applicationContext: Context) : IAppContainer {
     private val device by lazy {
-        DeviceInfo(applicationContext)
+        DeviceInfoProvider(applicationContext)
     }
 
     private val db by lazy {
         AppDatabase.create(applicationContext)
     }
 
-    private val dbRemote by lazy {
+    private val rdb by lazy {
         RemoteDatabase(applicationContext)
     }
 
     private val executor by lazy {
-        Executor(ui)
+        AppExecutor(ui)
+    }
+
+    private val auditDocManager by lazy {
+        AuditDocManager(
+            db = db,
+            rdb = rdb,
+            executor = executor,
+            device = device
+        )
     }
 
     private val auditExecutor by lazy {
         AuditExecutor(
-            db = db,
-            dbRemote = dbRemote,
+            auditDao = db.auditDao(),
             executor = executor,
-            device = device
+            auditDocManager = auditDocManager
         )
     }
 
@@ -82,4 +90,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
         )
     }
 
+    override fun destroy() {
+        auditDocManager.unsubscribe()
+    }
 }
