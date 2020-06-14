@@ -2,23 +2,28 @@ package com.example.tvh.ui
 
 import androidx.compose.*
 import androidx.ui.animation.Crossfade
+import androidx.ui.core.Alignment
+import androidx.ui.core.Modifier
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
+import androidx.ui.graphics.Color
+import androidx.ui.layout.*
 import androidx.ui.material.*
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.List
+import androidx.ui.material.ripple.ripple
+import androidx.ui.unit.dp
 import com.example.tvh.di.IAppContainer
 import com.example.tvh.services.Navigator
-import com.example.tvh.ui.group.GroupScreen
+import com.example.tvh.ui.article.ArticleScreen
 import com.example.tvh.ui.auditInfo.AuditInfoScreen
+import com.example.tvh.ui.common.ArticleActions
 import com.example.tvh.ui.home.HomeScreen
 
 @Composable
-fun App(IAppContainer: IAppContainer) {
-    val navigator = IAppContainer.navigator
-
+fun App(appContainer: IAppContainer) {
+    val navigator = appContainer.navigator
     val (scaffoldState, setScaffoldState) = state { ScaffoldState() }
-
     MaterialTheme(
         colors = lightThemeColors,
         typography = themeTypography
@@ -34,7 +39,7 @@ fun App(IAppContainer: IAppContainer) {
             },
             topAppBar = {
                 TopAppBar(
-                    title = { Text("TVH") },
+                    title = { Text("Прихожанин") },
                     navigationIcon = {
                         IconButton(
                             onClick = { setScaffoldState(ScaffoldState(DrawerState.Opened)) }
@@ -47,14 +52,51 @@ fun App(IAppContainer: IAppContainer) {
             bodyContent = {
                 Crossfade(navigator.getCurrentScreen()) { screen ->
                     when (screen) {
-                        is Navigator.Screen.HomeScreen -> HomeScreen(IAppContainer)
-                        is Navigator.Screen.GroupScreen -> GroupScreen(
-                            title = screen.group.name,
-                            text = screen.group.uid.toString(),
-                            IAppContainer = IAppContainer
+                        is Navigator.Screen.HomeScreen -> HomeScreen(appContainer)
+                        is Navigator.Screen.ArticleScreen -> ArticleScreen(
+                            article = screen.article,
+                            appContainer = appContainer
                         )
-                        is Navigator.Screen.AuditInfoScreen -> AuditInfoScreen(IAppContainer)
+                        is Navigator.Screen.AuditInfoScreen -> AuditInfoScreen(appContainer)
                     }
+                }
+            },
+            bottomAppBar = {
+                BottomAppBar(
+                    backgroundColor = Color.White,
+                    content = {
+                        BottomAppBarContent(appContainer)
+                    }
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun BottomAppBarContent(appContainer: IAppContainer) {
+    val articleCommander = appContainer.articleCommander
+    val navigator = appContainer.navigator
+    val componentsWithClipboardManager = appContainer.componentsWithClipboardManager
+
+    Row( modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)) {
+        Button(
+            modifier = Modifier.preferredWidthIn(maxWidth = 200.dp).ripple(),
+            onClick = {}
+        ) {
+            Text("Задать вопрос")
+        }
+        if (navigator.getCurrentScreen() != Navigator.Screen.HomeScreen) {
+            return@Row
+        }
+        Spacer(modifier = Modifier.preferredWidthIn(8.dp))
+        ArticleActions(
+            componentsWithClipboardManager = componentsWithClipboardManager,
+            onAddArticle = { article ->
+                if (article.asNews == 1) {
+                    articleCommander.updateNewsArticle(article)
+                } else {
+                    articleCommander.add(article)
                 }
             }
         )

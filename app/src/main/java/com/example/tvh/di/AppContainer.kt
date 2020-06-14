@@ -1,7 +1,7 @@
 package com.example.tvh.di
 
 import android.content.Context
-import com.example.tvh.commander.HomeCommander
+import com.example.tvh.commander.ArticleCommander
 import com.example.tvh.model.UiModel
 import com.example.tvh.repo.AuditInfoRepo
 import com.example.tvh.repo.HomeRepo
@@ -12,10 +12,14 @@ import com.example.tvh.services.*
  */
 interface IAppContainer {
     val navigator: INavigator
+    val imageLoader: ImageLoader
     val ui: UiModel
+    val auditDocManager: IAuditDocManager
     val homeRepo: HomeRepo
-    val homeCommander: HomeCommander
+    val articleCommander: ArticleCommander
     val auditInfoRepo: AuditInfoRepo
+    val componentsWithClipboardManager: ComponentsWithClipboardManager
+
     fun destroy()
 }
 
@@ -26,7 +30,7 @@ interface IAppContainer {
  */
 class AppContainer(private val applicationContext: Context) : IAppContainer {
     private val device by lazy {
-        DeviceInfoProvider(applicationContext)
+        DeviceInfoProvider(context = applicationContext)
     }
 
     private val db by lazy {
@@ -41,7 +45,11 @@ class AppContainer(private val applicationContext: Context) : IAppContainer {
         AppExecutor(ui)
     }
 
-    private val auditDocManager by lazy {
+    override val componentsWithClipboardManager by lazy {
+        ComponentsWithClipboardManager(context = applicationContext)
+    }
+
+    override val auditDocManager by lazy {
         AuditDocManager(
             db = db,
             rdb = rdb,
@@ -59,7 +67,7 @@ class AppContainer(private val applicationContext: Context) : IAppContainer {
     }
 
     override val navigator by lazy {
-        Navigator()
+        Navigator(context = applicationContext)
     }
 
     override val ui by lazy {
@@ -74,11 +82,13 @@ class AppContainer(private val applicationContext: Context) : IAppContainer {
         )
     }
 
-    override val homeCommander by lazy {
-        HomeCommander(
+    override val articleCommander by lazy {
+        ArticleCommander(
             db = db,
             repo = homeRepo,
-            executor = auditExecutor
+            executor = executor,
+            auditExecutor = auditExecutor,
+            rdb = rdb
         )
     }
 
@@ -90,7 +100,11 @@ class AppContainer(private val applicationContext: Context) : IAppContainer {
         )
     }
 
+    override val imageLoader by lazy {
+        ImageLoader(executor)
+    }
+
     override fun destroy() {
-        auditDocManager.unsubscribe()
+        auditDocManager.destroy()
     }
 }

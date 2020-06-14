@@ -11,8 +11,8 @@ class HomeRepo(
     private val executor: AppExecutor
 ) {
     fun loadHome() {
-        executor.run({ db.groupDao().findAll() }) {
-            ui.home = Home(groups = it)
+        executor.run({ db.articleDao().findAll() }) {
+            ui.home = Home(articles = it)
         }
     }
 }

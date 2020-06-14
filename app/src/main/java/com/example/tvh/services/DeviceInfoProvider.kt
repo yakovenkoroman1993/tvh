@@ -9,8 +9,8 @@ interface IDeviceInfoProvider {
 }
 
 @SuppressLint("HardwareIds")
-class DeviceInfoProvider(private val applicationContext: Context) : IDeviceInfoProvider {
+class DeviceInfoProvider(private val context: Context) : IDeviceInfoProvider {
     override val uid: String by lazy {
-        Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
+        Secure.getString(context.contentResolver, Secure.ANDROID_ID)
     }
 }

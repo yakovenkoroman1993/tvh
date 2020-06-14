@@ -19,9 +19,9 @@ import com.example.tvh.entity.AuditType
 import com.example.tvh.utils.Utils
 
 @Composable
-fun AuditInfoScreen(IAppContainer: IAppContainer) {
-    val repo = IAppContainer.auditInfoRepo
-    val ui = IAppContainer.ui
+fun AuditInfoScreen(appContainer: IAppContainer) {
+    val repo = appContainer.auditInfoRepo
+    val ui = appContainer.ui
 
     onActive {
         repo.loadAudit()

@@ -19,7 +19,7 @@ fun ActionsRow(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Actions:",
+                text = "Действия:",
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier
                     .wrapContentSize(Alignment.Center)

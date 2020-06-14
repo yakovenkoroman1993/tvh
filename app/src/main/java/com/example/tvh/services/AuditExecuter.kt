@@ -6,9 +6,9 @@ import com.example.tvh.entity.AuditType
 import kotlin.reflect.KClass
 
 interface IAuditExecutor {
-    fun <T : Any>runToCreate(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit)
-    fun <T : Any>runToDelete(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit)
-    fun <T : Any>runToUpdate(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit)
+    fun <T : Any>runToCreate(entityClass: KClass<T>, command: () -> String, callback: () -> Unit)
+    fun <T : Any>runToDelete(entityClass: KClass<T>, command: () -> String, callback: () -> Unit)
+    fun <T : Any>runToUpdate(entityClass: KClass<T>, command: () -> String, callback: () -> Unit)
 }
 
 class AuditExecutor(
@@ -17,31 +17,29 @@ class AuditExecutor(
     private val auditDocManager: IAuditDocManager
 ) : IAuditExecutor {
     private fun runWithAuditCreating(
-        command: () -> Long,
-        audit: (entityUid: Int) -> Array<Audit>,
+        command: () -> String,
+        audit: (entityUid: String) -> List<Audit>,
         callback: (List<Audit>) -> Unit
     ) {
-        var entityUid = 0
-        var uids = emptyList<Long>()
+        var audits = emptyList<Audit>()
+        var entityUid = ""
         executor.run({
-            entityUid = command().toInt()
-            uids = auditDao.create(*audit(entityUid))
+            entityUid = command()
+            audits = audit(entityUid)
+            audits.forEach { auditDao.create(it) }
         }, {
-            if (entityUid.compareTo(0) == 0) {
+            if (entityUid.isEmpty()) {
                 throw Error("Errors during command execution")
-            }
-            val audits = audit(entityUid).mapIndexed { index, audit ->
-                audit.copy(uid = uids[index].toInt())
             }
             callback(audits)
         })
     }
 
-    override fun <T : Any>runToCreate(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit) {
+    override fun <T : Any>runToCreate(entityClass: KClass<T>, command: () -> String, callback: () -> Unit) {
         runWithAuditCreating(
             command,
             audit = { entityUid ->
-                arrayOf(
+                listOf(
                     Audit(
                         entityUid = entityUid,
                         entityType = entityClass.java.simpleName,
@@ -55,11 +53,11 @@ class AuditExecutor(
         }
     }
 
-    override fun <T: Any>runToDelete(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit) {
+    override fun <T: Any>runToDelete(entityClass: KClass<T>, command: () -> String, callback: () -> Unit) {
         runWithAuditCreating(
             command,
             audit = { entityUid ->
-                arrayOf(
+                listOf(
                     Audit(
                         entityUid = entityUid,
                         entityType = entityClass.java.simpleName,
@@ -73,11 +71,11 @@ class AuditExecutor(
         }
     }
 
-    override fun <T: Any>runToUpdate(entityClass: KClass<T>, command: () -> Long, callback: () -> Unit) {
+    override fun <T: Any>runToUpdate(entityClass: KClass<T>, command: () -> String, callback: () -> Unit) {
         runWithAuditCreating(
             command,
             audit = { entityUid ->
-                arrayOf(
+                listOf(
                     Audit(
                         entityUid = entityUid,
                         entityType = entityClass.java.simpleName,

@@ -94,11 +94,11 @@ fun DialogTitle(titleText: String) {
 @Composable
 fun DialogActions(
     disabled: Boolean,
-    primaryText: String = "Apply",
+    primaryText: String = "Применить",
     onApply: () -> Unit,
     onClose: () -> Unit
 ) {
-    Row {
+    Row(modifier = Modifier.padding(top = 8.dp)) {
         Box(modifier = Modifier.weight(1f)) {
             if (disabled) {
                 Button(
@@ -125,7 +125,7 @@ fun DialogActions(
                 backgroundColor = Color.Transparent,
                 onClick = onClose
             ) {
-                Text("Dismiss")
+                Text("Закрыть")
             }
         }
     }

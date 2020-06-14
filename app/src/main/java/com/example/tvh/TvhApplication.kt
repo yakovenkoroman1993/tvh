@@ -7,10 +7,10 @@ import com.example.tvh.di.AppContainer
 class TvhApplication : Application() {
 
     // AppContainer instance used by the rest of classes to obtain dependencies
-    lateinit var containerI: IAppContainer
+    lateinit var appContainer: IAppContainer
 
     override fun onCreate() {
         super.onCreate()
-        this.containerI = AppContainer(applicationContext)
+        this.appContainer = AppContainer(applicationContext)
     }
 }

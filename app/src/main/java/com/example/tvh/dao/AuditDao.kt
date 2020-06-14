@@ -10,13 +10,13 @@ interface AuditDao {
     fun findAll(): List<Audit>
 
     @Query("SELECT * FROM `audit` WHERE uid = :uid")
-    fun find(uid: Int): Audit
+    fun find(uid: String): Audit
 
     @Insert
-    fun create(vararg audit: Audit): List<Long>
+    fun create(audit: Audit)
 
     @Update
-    fun update(vararg audit: Audit): Int
+    fun update(audit: Audit): Int
 
     @Delete
     fun delete(audit: Audit): Int

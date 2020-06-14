@@ -1,7 +1,7 @@
 package com.example.tvh.model
 
-import com.example.tvh.entity.Group
+import com.example.tvh.entity.Article
 
 class Home(
-    val groups: List<Group> = listOf()
+    val articles: List<Article> = listOf()
 )

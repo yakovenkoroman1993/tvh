@@ -28,14 +28,14 @@ fun AppDrawer(
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.preferredHeight(24.dp))
         Text(
-            text = "Menu",
+            text = "Меню",
             style = TextStyle(fontSize = 20.sp),
             modifier = Modifier.padding(start = 8.dp)
         )
         Divider(color = MaterialTheme.colors.onSurface.copy(alpha = .2f))
         DrawerButton(
             icon = { Icon(Icons.Filled.Home) },
-            label = "Home",
+            label = "Главная",
             isSelected = currentScreen == Navigator.Screen.HomeScreen,
             action = {
                 onNavigateTo(Navigator.Screen.HomeScreen)
