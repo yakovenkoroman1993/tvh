@@ -17,7 +17,6 @@ import com.example.tvh.utils.Utils
 fun HomeArticles(
     articles: List<Article>,
     rowModifier: Modifier,
-    onRemoveArticle: (article: Article) -> Unit,
     onNavigateToArticle: (screen: Navigator.Screen) -> Unit
 ) {
     VerticalScroller {
@@ -26,9 +25,6 @@ fun HomeArticles(
                 ArticleItem(
                     modifier = rowModifier,
                     article = article,
-                    onRemove = {
-                        onRemoveArticle(article)
-                    },
                     onClick = {
                         onNavigateToArticle(
                             Navigator.Screen.ArticleScreen(article)
@@ -44,7 +40,6 @@ fun HomeArticles(
 fun ArticleItem(
     modifier: Modifier = Modifier,
     article: Article,
-    onRemove: () -> Unit,
     onClick: () -> Unit
 ) {
     Row(modifier = modifier) {
@@ -62,13 +57,6 @@ fun ArticleItem(
                         style = MaterialTheme.typography.body2
                     )
                 }
-            }
-        }
-        Row(
-            modifier = Modifier.padding(top = 5.dp)
-        ) {
-            TextButton(onClick = onRemove) {
-                Text("Удалить")
             }
         }
     }

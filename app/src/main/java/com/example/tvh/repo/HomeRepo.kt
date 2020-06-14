@@ -1,17 +1,16 @@
 package com.example.tvh.repo
 
+import com.example.tvh.entity.Article
 import com.example.tvh.model.UiModel
 import com.example.tvh.model.Home
-import com.example.tvh.services.AppDatabase
-import com.example.tvh.services.AppExecutor
+import com.example.tvh.services.RemoteDatabase
 
 class HomeRepo(
-    private val db: AppDatabase,
-    private val ui: UiModel,
-    private val executor: AppExecutor
+    private val rdb: RemoteDatabase,
+    private val ui: UiModel
 ) {
     fun loadHome() {
-        executor.run({ db.articleDao().findAll() }) {
+        rdb.findAll(Article::class.java) {
             ui.home = Home(articles = it)
         }
     }

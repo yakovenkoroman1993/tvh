@@ -4,20 +4,15 @@ import androidx.compose.*
 import androidx.ui.animation.Crossfade
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.*
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.List
 import androidx.ui.material.ripple.ripple
 import androidx.ui.unit.dp
 import com.example.tvh.di.IAppContainer
 import com.example.tvh.services.Navigator
 import com.example.tvh.ui.article.ArticleScreen
-import com.example.tvh.ui.auditInfo.AuditInfoScreen
-import com.example.tvh.ui.common.ArticleActions
 import com.example.tvh.ui.home.HomeScreen
 
 @Composable
@@ -30,24 +25,8 @@ fun App(appContainer: IAppContainer) {
     ) {
         Scaffold(
             scaffoldState = scaffoldState,
-            drawerContent = {
-                AppDrawer(
-                    currentScreen = navigator.getCurrentScreen(),
-                    onClose = { setScaffoldState(ScaffoldState(DrawerState.Closed)) },
-                    onNavigateTo = { navigator.navigateTo(it) }
-                )
-            },
             topAppBar = {
-                TopAppBar(
-                    title = { Text("Прихожанин") },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { setScaffoldState(ScaffoldState(DrawerState.Opened)) }
-                        ) {
-                            Icon(Icons.Filled.List)
-                        }
-                    }
-                )
+                TopAppBar(title = { Text("Прихожанин") })
             },
             bodyContent = {
                 Crossfade(navigator.getCurrentScreen()) { screen ->
@@ -57,7 +36,6 @@ fun App(appContainer: IAppContainer) {
                             article = screen.article,
                             appContainer = appContainer
                         )
-                        is Navigator.Screen.AuditInfoScreen -> AuditInfoScreen(appContainer)
                     }
                 }
             },
@@ -75,10 +53,6 @@ fun App(appContainer: IAppContainer) {
 
 @Composable
 fun BottomAppBarContent(appContainer: IAppContainer) {
-    val articleCommander = appContainer.articleCommander
-    val navigator = appContainer.navigator
-    val componentsWithClipboardManager = appContainer.componentsWithClipboardManager
-
     Row( modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)) {
         Button(
             modifier = Modifier.preferredWidthIn(maxWidth = 200.dp).ripple(),
@@ -86,19 +60,5 @@ fun BottomAppBarContent(appContainer: IAppContainer) {
         ) {
             Text("Задать вопрос")
         }
-        if (navigator.getCurrentScreen() != Navigator.Screen.HomeScreen) {
-            return@Row
-        }
-        Spacer(modifier = Modifier.preferredWidthIn(8.dp))
-        ArticleActions(
-            componentsWithClipboardManager = componentsWithClipboardManager,
-            onAddArticle = { article ->
-                if (article.asNews == 1) {
-                    articleCommander.updateNewsArticle(article)
-                } else {
-                    articleCommander.add(article)
-                }
-            }
-        )
     }
 }

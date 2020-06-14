@@ -1,6 +1,5 @@
 package com.example.tvh.services
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.Composable
 import androidx.compose.onActive
@@ -8,16 +7,11 @@ import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
-import androidx.ui.foundation.Image
-import androidx.ui.foundation.Text
 import androidx.ui.graphics.ImageAsset
 import androidx.ui.graphics.asImageAsset
 import androidx.ui.layout.fillMaxSize
 import androidx.ui.layout.wrapContentSize
 import androidx.ui.material.CircularProgressIndicator
-import androidx.ui.material.ScaffoldState
-import androidx.ui.res.imageResource
-import com.example.tvh.R
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection

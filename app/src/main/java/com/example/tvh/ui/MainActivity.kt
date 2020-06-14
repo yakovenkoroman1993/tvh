@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.ui.core.setContent
 import com.example.tvh.TvhApplication
-import com.example.tvh.services.AppDatabase
 import com.example.tvh.services.Navigator
 
 class MainActivity : AppCompatActivity() {
@@ -13,11 +12,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val appContainer = (this.application as TvhApplication).appContainer
-        if (!AppDatabase.isDatabaseExisted(applicationContext)) {
-            // ...
-        }
-
-        appContainer.auditDocManager.subscribe()
         setContent { App(appContainer) }
     }
 

@@ -22,7 +22,6 @@ class Navigator(private val context: Context) : INavigator {
     sealed class Screen {
         object HomeScreen: Screen()
         class ArticleScreen(val article : Article): Screen()
-        object AuditInfoScreen: Screen()
     }
 
     private val navigation: Navigation = Navigation()

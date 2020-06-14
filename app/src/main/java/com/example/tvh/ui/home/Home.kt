@@ -14,7 +14,6 @@ import com.example.tvh.services.Navigator
 fun Home(
     articles: List<Article>,
     imageLoader: ImageLoader,
-    onRemoveArticle: (article: Article) -> Unit,
     onNavigateToArticle: (screen: Navigator.Screen) -> Unit,
     onNavigateToSite: (String) -> Unit
 ) {
@@ -43,7 +42,6 @@ fun Home(
                 HomeArticles(
                     articles = otherArticles,
                     rowModifier = rowModifier,
-                    onRemoveArticle = onRemoveArticle,
                     onNavigateToArticle = onNavigateToArticle
                 )
             }
