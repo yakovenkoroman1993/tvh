@@ -3,6 +3,7 @@ package com.example.tvh.services
 import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -16,6 +17,11 @@ interface IRemoteDatabase {
         objectClass: Class<T>,
         callback: (T?) -> Unit = {}
     )
+
+    fun <T : Any>subscribe(
+        objectClass: Class<T>,
+        callback: (List<T>) -> Unit
+    ) : ListenerRegistration
 }
 
 class RemoteDatabase(applicationContext: Context) : IRemoteDatabase {
@@ -24,6 +30,27 @@ class RemoteDatabase(applicationContext: Context) : IRemoteDatabase {
     init {
         FirebaseApp.initializeApp(applicationContext)
         db = Firebase.firestore
+    }
+
+    override fun <T : Any>subscribe(
+        objectClass: Class<T>,
+        callback: (List<T>) -> Unit
+    ) : ListenerRegistration {
+        return db
+            .collection(objectClass.simpleName)
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    e.printStackTrace()
+                    return@addSnapshotListener
+                }
+
+                if (value == null) {
+                    callback(emptyList())
+                    return@addSnapshotListener
+                }
+
+                callback(value.toObjects(objectClass))
+            }
     }
 
     override fun <T : Any>findAll(
