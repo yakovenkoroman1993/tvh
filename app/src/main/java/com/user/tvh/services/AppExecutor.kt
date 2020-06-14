@@ -1,0 +1,17 @@
+package com.user.tvh.services
+
+import com.user.tvh.model.UiModel
+
+class AppExecutor(private val ui: UiModel) : ThreadsafeExecutor() {
+    fun <T>run(command: () -> T, callback: (T) -> Unit = {}) {
+        ui.isLoading = true
+        run(
+            command = command,
+            onSuccess = callback,
+            onFail = {
+                throw Error(it.message)
+            },
+            onFinal = { ui.isLoading = false }
+        )
+    }
+}
