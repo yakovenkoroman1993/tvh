@@ -56,7 +56,9 @@ fun BottomAppBarContent(appContainer: IAppContainer) {
     Row( modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)) {
         Button(
             modifier = Modifier.preferredWidthIn(maxWidth = 200.dp).ripple(),
-            onClick = {}
+            onClick = {
+                appContainer.navigator.navigateToSite("http://wa.me/79133977835")
+            }
         ) {
             Text("Задать вопрос")
         }

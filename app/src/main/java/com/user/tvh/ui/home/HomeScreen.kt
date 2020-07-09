@@ -3,7 +3,6 @@ package com.user.tvh.ui.home
 import androidx.compose.Composable
 import androidx.compose.onActive
 import com.user.tvh.di.IAppContainer
-import com.google.firebase.firestore.ListenerRegistration
 
 @Composable
 fun HomeScreen(appContainer: IAppContainer) {
@@ -11,16 +10,12 @@ fun HomeScreen(appContainer: IAppContainer) {
     val navigator = appContainer.navigator
     val imageLoader = appContainer.imageLoader
 
-    var subscription: ListenerRegistration?
     onActive {
-        subscription = repo.subscribeToArticles()
-        onDispose {
-            subscription!!.remove()
-        }
+        repo.loadHome()
     }
 
     Home(
-        articles = appContainer.ui.home.articles,
+        articles = appContainer.ui.home?.articles ?:  emptyList(),
         imageLoader = imageLoader,
         onNavigateToArticle = { navigator.navigateTo(it) },
         onNavigateToSite = { navigator.navigateToSite(it) }

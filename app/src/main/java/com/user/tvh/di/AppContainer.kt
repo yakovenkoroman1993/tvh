@@ -13,6 +13,8 @@ interface IAppContainer {
     val imageLoader: ImageLoader
     val ui: UiModel
     val homeRepo: HomeRepo
+    val notifier: Notifier
+    val rdb: RemoteDatabase
 
     fun destroy()
 }
@@ -23,12 +25,14 @@ interface IAppContainer {
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
 class AppContainer(private val applicationContext: Context) : IAppContainer {
-    private val rdb by lazy {
-        RemoteDatabase(applicationContext)
-    }
-
     private val executor by lazy {
         AppExecutor(ui)
+    }
+
+    override val notifier by lazy {
+        Notifier(
+            context = applicationContext
+        )
     }
 
     override val navigator by lazy {
@@ -44,6 +48,10 @@ class AppContainer(private val applicationContext: Context) : IAppContainer {
             rdb = rdb,
             ui = ui
         )
+    }
+
+    override val rdb by lazy {
+        RemoteDatabase(applicationContext)
     }
 
     override val imageLoader by lazy {

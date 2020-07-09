@@ -2,6 +2,7 @@ package com.user.tvh.services
 
 import android.content.Context
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -20,7 +21,7 @@ interface IRemoteDatabase {
 
     fun <T : Any>subscribe(
         objectClass: Class<T>,
-        callback: (List<T>) -> Unit
+        callback: (List<T>, List<T>) -> Unit
     ) : ListenerRegistration
 }
 
@@ -34,7 +35,7 @@ class RemoteDatabase(applicationContext: Context) : IRemoteDatabase {
 
     override fun <T : Any>subscribe(
         objectClass: Class<T>,
-        callback: (List<T>) -> Unit
+        callback: (List<T>, List<T>) -> Unit
     ) : ListenerRegistration {
         return db
             .collection(objectClass.simpleName)
@@ -45,11 +46,15 @@ class RemoteDatabase(applicationContext: Context) : IRemoteDatabase {
                 }
 
                 if (value == null) {
-                    callback(emptyList())
+                    callback(emptyList(), emptyList())
                     return@addSnapshotListener
                 }
 
-                callback(value.toObjects(objectClass))
+                val addedDocuments = value.documentChanges
+                    .filter { it.type == DocumentChange.Type.ADDED }
+                    .map { it.document.toObject(objectClass) }
+
+                callback(value.toObjects(objectClass), addedDocuments)
             }
     }
 
