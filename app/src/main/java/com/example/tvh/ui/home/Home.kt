@@ -25,7 +25,7 @@ fun Home(
         modifier = Modifier.padding(bottom = 50.dp)
     ) {
         if (articles.isEmpty()) {
-            Text("Пусто")
+            Text("Пусто", modifier = Modifier.padding(8.dp))
             return@Column
         }
         if (newsArticle != null) {

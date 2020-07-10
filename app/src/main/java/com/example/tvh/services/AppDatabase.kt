@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun auditDao(): AuditDao
 
     companion object {
-        private const val dbName = "tvh32"
+        private const val dbName = "tvh34"
 
         fun create(applicationContext: Context): AppDatabase {
             return Room

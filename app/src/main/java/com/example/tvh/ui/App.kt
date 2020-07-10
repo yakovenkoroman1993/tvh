@@ -39,7 +39,7 @@ fun App(appContainer: IAppContainer) {
             },
             topAppBar = {
                 TopAppBar(
-                    title = { Text("Прихожанин") },
+                    title = { Text("Прихожанин (Админ)") },
                     navigationIcon = {
                         IconButton(
                             onClick = { setScaffoldState(ScaffoldState(DrawerState.Opened)) }
@@ -80,16 +80,6 @@ fun BottomAppBarContent(appContainer: IAppContainer) {
     val componentsWithClipboardManager = appContainer.componentsWithClipboardManager
 
     Row( modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)) {
-        Button(
-            modifier = Modifier.preferredWidthIn(maxWidth = 200.dp).ripple(),
-            onClick = {}
-        ) {
-            Text("Задать вопрос")
-        }
-        if (navigator.getCurrentScreen() != Navigator.Screen.HomeScreen) {
-            return@Row
-        }
-        Spacer(modifier = Modifier.preferredWidthIn(8.dp))
         ArticleActions(
             componentsWithClipboardManager = componentsWithClipboardManager,
             onAddArticle = { article ->
